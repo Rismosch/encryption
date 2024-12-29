@@ -1,2 +1,2 @@
-# rsa
-small semo project for trying to understand how rsa works
+# encryption
+small semo project for trying to understand some encryption systems
