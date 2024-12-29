@@ -1,7 +1,4 @@
 // https://de.wikipedia.org/wiki/RSA-Kryptosystem
-
-use crate::util::mod_pow;
-
 pub fn run() {
     // two primes. p must not be equal to q. also, it's recommended for them to have the same order
     // of magnitude, but they shouldn't be to close to each other. they should fall somewhere in
@@ -55,7 +52,9 @@ pub fn run() {
     println!("encrypted = {}", encrypted);
     println!("decrypted = {}", decrypted);
 
-    // try with string
+    // try with string. currently this encrypts the bytes individually. for an actual real world
+    // example, one would use multiple characters as a single number. because the numbers easily
+    // become very large, it seems rsa is not suitable for large data streams.
     let message_string = "hello world";
     let message = message_string.as_bytes();
     let mut encrypted = message.to_vec();
@@ -73,4 +72,28 @@ pub fn run() {
     println!("encrypted = {:?}", encrypted);
     println!("decrypted = {:?}", decrypted);
     println!("decrypted_string = {}", decrypted_string);
+}
+
+fn mod_pow(value: u32, exp: u32, modulus: u32) -> u32 {
+    let mut result = 1;
+    for _ in 0..exp {
+        result = mod_mul(result, value, modulus);
+    }
+    result
+}
+
+fn mod_mul(lhs: u32, rhs: u32, modulus: u32) -> u32 {
+    let mut result = 0;
+    for _ in 0..rhs {
+        result = mod_add(result, lhs, modulus);
+    }
+    result
+}
+
+fn mod_add(lhs: u32, rhs: u32, modulus: u32) -> u32 {
+    let mut result = lhs + rhs;
+    while result >= modulus {
+        result -= modulus;
+    }
+    result
 }

@@ -1,6 +1,7 @@
+mod aes;
 mod rsa;
-mod util;
 
 fn main() {
-    rsa::run();
+    aes::run();
+    //rsa::run();
 }
